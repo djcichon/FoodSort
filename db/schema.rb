@@ -10,7 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907023844) do
+ActiveRecord::Schema.define(version: 20160908022942) do
+
+  create_table "dishes", force: :cascade do |t|
+    t.integer  "grocery_trip_id"
+    t.integer  "recipe_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["grocery_trip_id"], name: "index_dishes_on_grocery_trip_id"
+    t.index ["recipe_id"], name: "index_dishes_on_recipe_id"
+  end
+
+  create_table "grocery_trips", force: :cascade do |t|
+    t.date     "date"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_grocery_trips_on_user_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "recipe_products", force: :cascade do |t|
+    t.integer  "recipe_id"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_recipe_products_on_product_id"
+    t.index ["recipe_id"], name: "index_recipe_products_on_recipe_id"
+  end
 
   create_table "recipes", force: :cascade do |t|
     t.string   "name"
