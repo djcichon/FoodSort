@@ -1,9 +1,8 @@
-<h1>StaticPages#home</h1>
-<p>Find me in app/views/static_pages/home.html.erb</p>
+<% unless user_signed_in? %>
+<h1>Welcome to Food!</h1>
+<p>Don't have an account yet?</p>
 
-<% if user_signed_in? %>
-	<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+<%= link_to "Create account", new_user_registration_path, class: "btn btn-primary"%>
 <% else %>
-	<%= link_to "Create account", new_user_registration_path %>
-	<%= link_to "Sign in", new_user_session_path %>
+	Woah, someone signed in!
 <% end %>
