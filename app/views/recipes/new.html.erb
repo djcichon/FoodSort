@@ -1,0 +1,13 @@
+<h1>Add Recipe</h1>
+
+<div class="row">
+	<%= form_for(@recipe) do |f| %>
+		<%= f.label :name %>
+	  <%= f.text_field :name, class: 'form-control' %>
+
+		<%= f.label :category %>
+	  <%= f.text_field :category, class: 'form-control' %>
+
+		<%= f.submit "Create Recipe", class: 'btn btn-primary' %>
+	<% end %>
+</div>

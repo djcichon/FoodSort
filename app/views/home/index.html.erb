@@ -1,8 +1,14 @@
 <% unless user_signed_in? %>
-<h1>Welcome to Food!</h1>
-<p>Don't have an account yet?</p>
+	<h1>Welcome to Food!</h1>
+	<p>Don't have an account yet?</p>
 
-<%= link_to "Create account", new_user_registration_path, class: "btn btn-primary"%>
+	<%= link_to "Create account", new_user_registration_path, class: "btn btn-primary"%>
 <% else %>
-	Woah, someone signed in!
+	<%= link_to "Add recipe", new_recipe_path, class: "btn btn-primary" %>
+
+	<ul>
+		<% @recipes.each do |recipe| %>
+			<%= link_to recipe.name, edit_recipe_path(recipe) %>
+		<% end %>
+	</ul>
 <% end %>

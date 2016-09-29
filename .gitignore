@@ -21,3 +21,6 @@ public/uploads
 
 # Ignore Spring files
 /spring/*.pid
+
+# Ignore swap files
+*.swp
