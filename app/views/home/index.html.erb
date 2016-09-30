@@ -4,11 +4,19 @@
 
 	<%= link_to "Create account", new_user_registration_path, class: "btn btn-primary"%>
 <% else %>
-	<%= link_to "Add recipe", new_recipe_path, class: "btn btn-primary" %>
+	<%= link_to "New Recipe", new_recipe_path, class: "btn btn-primary" %>
 
-	<ul>
+	<h1>Your Recipes</h1>
+	<table class="table">
+		<tr>
+			<th>Name</th>
+			<th>Category</th>
+		</tr>
+
 		<% @recipes.each do |recipe| %>
-			<%= link_to recipe.name, edit_recipe_path(recipe) %>
+			<tr>
+				<td><%= link_to recipe.name, edit_recipe_path(recipe) %></td>
+				<td><%= recipe.category %></td>
+			</tr>
 		<% end %>
-	</ul>
 <% end %>
