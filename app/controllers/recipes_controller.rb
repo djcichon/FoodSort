@@ -4,15 +4,14 @@ class RecipesController < ApplicationController
   end
 
   def create
+		# TODO: Ingredients will need to be bound separately, I think.
+		# TODO: Sometimes a Product is created, sometimes it is referenced.
 		@recipe = current_user.recipes.create(recipe_params)
 
 		if @recipe.save
 			flash[:success] = "Recipe successfully added"
 			redirect_to root_url
 		else
-			@recipe.errors.full_messages.each do |message|
-				puts message
-			end
 			render 'new'
 		end
 
@@ -35,6 +34,6 @@ class RecipesController < ApplicationController
 
 	private
 		def recipe_params
-			params.require(:recipe).permit(:name, :category)
+			params.require(:recipe).permit(:name, :category, recipe_products_attributes: [:name])
 		end
 end

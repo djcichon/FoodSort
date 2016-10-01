@@ -3,3 +3,27 @@
 
 <%= f.label :category %>
 <%= f.text_field :category, class: 'form-control' %>
+
+<h2>Ingredients (<%= @recipe.products.size %>)</h2> 
+<ul id='ingredient_list'>
+	<%= f.fields_for :products do |product_form| %>
+		<li>
+			<%= product_form.object.name %>
+			<%= product_form.hidden_field :name %>
+		</li> 
+	<% end %>
+</ul>
+
+<%= text_field :new_ingredient, :name %>
+<a id="add_ingredient_button" class="btn btn-primary" href="#" data-turbolinks="false">Add Ingredient</a>
+
+<script>
+	$('#add_ingredient_button').click(function() {
+    var name = $('#new_ingredient_name').val();
+		var $list = $('#ingredient_list');
+
+		//TODO: Need to add the hidden for the name as well.  Id shouldn't be necessary.
+		//TODO: Will need to determine the correct index for the hidden param.
+		$list.append('<li>' + name + '</li>');
+	});
+</script>
