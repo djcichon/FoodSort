@@ -1,6 +1,6 @@
 class RecipeProduct < ApplicationRecord
 	attr_accessor :name
-  belongs_to :recipe
+  belongs_to :recipe, :inverse_of => :recipe_products
   belongs_to :product
 
 	def name
