@@ -1,0 +1,22 @@
+<h1>Products</h1>
+
+<h2>Ordered</h2>
+<ol id="ordered_products">
+	<li>Placeholder</li>
+	<% @ordered_products.each do |product| %>
+		<li><%= product.name %></li>
+	<% end %>
+</ol>
+<h2>Unordered</h2>
+<ul id="unordered_products">
+	<% @unordered_products.each do |product| %>
+		<li><%= product.name %></li>
+	<% end %>
+</ul>
+
+<script>
+	var unordered = document.getElementById('unordered_products');
+	var ordered = document.getElementById('ordered_products');
+	var sortable = Sortable.create(unordered, { group: { name: "products", put: false } });
+	var sortable = Sortable.create(ordered, { group: "products" });
+</script>
