@@ -4,12 +4,12 @@
 <%= f.label :category %>
 <%= f.text_field :category, class: 'form-control' %>
 
-<h2>Ingredients (<%= @recipe.products.size %>)</h2> 
+<h2>Ingredients (<%= @recipe.recipe_products.size %>)</h2> 
 <ul id='ingredient_list'>
-	<%= f.fields_for :products do |product_form| %>
+	<%= f.fields_for :recipe_products do |product_form| %>
 		<li>
 			<%= product_form.object.name %>
-			<%= product_form.hidden_field :name %>
+			<%= product_form.hidden_field :name, 'data-index': product_form.options[:child_index] %>
 		</li> 
 	<% end %>
 </ul>
@@ -19,11 +19,34 @@
 
 <script>
 	$('#add_ingredient_button').click(function() {
-    var name = $('#new_ingredient_name').val();
+		var $new_ingredient_name = $('#new_ingredient_name');
+    var name = $new_ingredient_name.val();
 		var $list = $('#ingredient_list');
 
-		//TODO: Need to add the hidden for the name as well.  Id shouldn't be necessary.
-		//TODO: Will need to determine the correct index for the hidden param.
-		$list.append('<li>' + name + '</li>');
+		// Find the last element with data-index to calculate the next one
+		var next_index = 0;
+		var $data_indices = $('input[data-index]');
+		
+		if($data_indices.length > 0) {
+			next_index = $data_indices.last().data('index') + 1;
+		}
+
+		//TODO: Can this be rendered more simply with a rails helper?
+		var hidden = '<input data-index="' + next_index + '" type="hidden" value="' + name + 
+						 		 '" name="recipe[recipe_products_attributes][' + next_index + '][name]"' +
+								 'id="recipe_products_attributes_' + next_index + '_name" />';
+
+		$list.append('<li>' + name + hidden + '</li>');
+
+		$new_ingredient_name.val('');
+	});
+
+	$('#new_ingredient_name').keydown(function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+			$('#add_ingredient_button').click();
+
+			return false;
+		}
 	});
 </script>

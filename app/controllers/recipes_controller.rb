@@ -6,6 +6,9 @@ class RecipesController < ApplicationController
   def create
 		# TODO: Ingredients will need to be bound separately, I think.
 		# TODO: Sometimes a Product is created, sometimes it is referenced.
+		puts "test"
+		puts params.inspect
+		puts recipe_params.inspect
 		@recipe = current_user.recipes.create(recipe_params)
 
 		if @recipe.save
@@ -22,6 +25,9 @@ class RecipesController < ApplicationController
   end
 
   def update
+		puts "test"
+		puts params.inspect
+		puts recipe_params.inspect
 		@recipe = Recipe.find(params[:id])
 
 		if @recipe.update_attributes(recipe_params)
@@ -34,6 +40,6 @@ class RecipesController < ApplicationController
 
 	private
 		def recipe_params
-			params.require(:recipe).permit(:name, :category, recipe_products_attributes: [:name])
+			params.require(:recipe).permit(:name, :category, recipe_products_attributes: [:name, :id])
 		end
 end
