@@ -4,8 +4,6 @@ class RecipesController < ApplicationController
   end
 
   def create
-		# TODO: Ingredients will need to be bound separately, I think.
-		# TODO: Sometimes a Product is created, sometimes it is referenced.
 		puts "test"
 		puts params.inspect
 		puts recipe_params.inspect
@@ -15,6 +13,7 @@ class RecipesController < ApplicationController
 			flash[:success] = "Recipe successfully added"
 			redirect_to root_url
 		else
+			puts @recipe.errors.inspect
 			render 'new'
 		end
 
