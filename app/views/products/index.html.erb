@@ -1,22 +1,45 @@
 <h1>Products</h1>
 
-<h2>Ordered</h2>
-<ol id="ordered_products">
-	<li>Placeholder</li>
-	<% @ordered_products.each do |product| %>
-		<li><%= product.name %></li>
-	<% end %>
-</ol>
-<h2>Unordered</h2>
-<ul id="unordered_products">
-	<% @unordered_products.each do |product| %>
-		<li><%= product.name %></li>
-	<% end %>
-</ul>
+<%= form_tag products_path, id: 'products_form' do %>
+	<div class="col-md-6">
+		<h2>Ordered</h2>
+		<ol id="ordered_products">
+			<% @ordered_products.each_with_index do |product, index| %>
+				<li>
+					<%= product.name %>
+					<%= hidden_field_tag "products[#{index}][id]", product.id %>
+					<%= hidden_field_tag "products[#{index}][order]", product.order, class: 'order' %>
+				</li>
+			<% end %>
+		</ol>
+		<%= submit_tag "Save Ordering", class: 'btn btn-primary' %>
+	</div>
+<% end %>
+
+<div class="col-md-6">
+	<h2>Unordered</h2>
+	<ul id="unordered_products">
+		<% @unordered_products.each_with_index do |product, index| %>
+			<li>
+				<%= product.name %>
+				<%= hidden_field_tag "products[#{@ordered_products.size + index}][id]", product.id %>
+				<%= hidden_field_tag "products[#{@ordered_products.size + index}][order]", "", class: 'order'%>
+			</li>
+		<% end %>
+	</ul>
+</div>
 
 <script>
 	var unordered = document.getElementById('unordered_products');
 	var ordered = document.getElementById('ordered_products');
 	var sortable = Sortable.create(unordered, { group: { name: "products", put: false } });
 	var sortable = Sortable.create(ordered, { group: "products" });
+
+	// Set the order on each item in the list before submitting
+	// This assumes jquery returns these in the order they appear on the page
+	$('#products_form').submit(function(e) {
+		$('#ordered_products .order').each(function(index, el) {
+			$(el).val(index);	
+		});
+	});
 </script>
