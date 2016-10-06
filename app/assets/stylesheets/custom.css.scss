@@ -1,2 +1,9 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.sortable_list {
+	min-height: 50px;
+	width: 200px;
+	border: dashed;
+  border-width: 1px;
+}
