@@ -1,0 +1,26 @@
+<h1>Create Grocery Trip</h1>
+
+<div class="col-md-4">
+	<h2>Meals to Cook</h2>
+	<ol id="meal_list" class="sortable_list">
+	</ol>
+</div>
+<div class="col-md-4">
+	<h2>My Recipes</h2>
+	<ol id="recipe_list" class="sortable_list">
+		<% @recipes.each do |recipe| %>
+			<%# TODO: Add an id hidden %>
+			<li><%= recipe.name %></li>
+		<% end %>
+	</ol>
+</div>
+<div class="col-md-4">
+	<h2>Grocery List</h2>
+	<ol id="grocery_list" class="sortable_list">
+	</ol>
+</div>
+
+<script>
+	Sortable.create($('#recipe_list')[0], { group: { name: "recipes" } });
+	Sortable.create($('#meal_list')[0], { group: { name: "recipes" } });
+</script>

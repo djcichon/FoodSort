@@ -1,0 +1,2 @@
+module GroceryTripsHelper
+end
