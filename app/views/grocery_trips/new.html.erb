@@ -2,17 +2,19 @@
 
 <div class="col-md-4">
 	<h2>Meals to Cook</h2>
-	<ol id="meal_list" class="sortable_list">
-	</ol>
+	<ul id="meal_list" class="sortable_list">
+	</ul>
 </div>
 <div class="col-md-4">
 	<h2>My Recipes</h2>
-	<ol id="recipe_list" class="sortable_list">
+	<ul id="recipe_list" class="sortable_list">
 		<% @recipes.each do |recipe| %>
 			<%# TODO: Add an id hidden %>
-			<li><%= recipe.name %></li>
+			<li data-recipe-id="<%= recipe.id %>">
+				<%= recipe.name %>
+			</li>
 		<% end %>
-	</ol>
+	</ul>
 </div>
 <div class="col-md-4">
 	<h2>Grocery List</h2>
@@ -22,5 +24,48 @@
 
 <script>
 	Sortable.create($('#recipe_list')[0], { group: { name: "recipes" } });
-	Sortable.create($('#meal_list')[0], { group: { name: "recipes" } });
+
+	Sortable.create($('#meal_list')[0], { 
+		group: { name: "recipes" },
+		onAdd: function(e) {
+			var recipe_id = $(e.item).data('recipe-id');
+
+			$.ajax( { url: '<%= grocery_trips_get_ingredients_url %>', 
+								data: { recipe_id: recipe_id } 
+				})
+			.done(function(json) {
+				var $groceryList = $('#grocery_list');
+
+				console.log(JSON.stringify(json));
+				$.each(json, function( index, el ) {
+					var name = el.name;
+					var order = (el.order == null ? -1 : parseInt(el.order));
+					var newLi = '<li data-order="' + order + '">' + name + '</li>';
+
+					var $higherLi = null;
+
+					// Look for an li that should come after this one
+					$groceryList.find('li').each(function(index, el) {
+						var elOrder = parseInt($(el).data('order'));
+
+						if(elOrder > order) {
+							$higherLi = $(el);
+
+							return false;
+						}
+					});
+
+					// Add this li before the higher one
+					if($higherLi != null) {
+						$higherLi.before(newLi);
+					}
+					// If a higher one wasn't found, just add it to the end
+					else {
+						$groceryList.append(newLi);
+					}
+				});
+			});
+		}
+	});
+
 </script>
