@@ -9,7 +9,6 @@
 	<h2>My Recipes</h2>
 	<ul id="recipe_list" class="sortable_list">
 		<% @recipes.each do |recipe| %>
-			<%# TODO: Add an id hidden %>
 			<li data-recipe-id="<%= recipe.id %>">
 				<%= recipe.name %>
 			</li>
@@ -23,6 +22,8 @@
 </div>
 
 <script>
+	//TODO: Implement a way to remove a meal from the list.  Each ingredient should
+  //TODO: be marked so it can be easily removed.
 	Sortable.create($('#recipe_list')[0], { group: { name: "recipes" } });
 
 	Sortable.create($('#meal_list')[0], { 
@@ -32,19 +33,17 @@
 
 			$.ajax( { url: '<%= grocery_trips_get_ingredients_url %>', 
 								data: { recipe_id: recipe_id } 
-				})
+			})
 			.done(function(json) {
 				var $groceryList = $('#grocery_list');
 
-				console.log(JSON.stringify(json));
 				$.each(json, function( index, el ) {
-					var name = el.name;
 					var order = (el.order == null ? -1 : parseInt(el.order));
-					var newLi = '<li data-order="' + order + '">' + name + '</li>';
+					var newLi = '<li data-order="' + order + '" data-recipe-id="' + recipe_id + '">' + el.name + '</li>';
 
+
+					// Find the correct position in the grocery list
 					var $higherLi = null;
-
-					// Look for an li that should come after this one
 					$groceryList.find('li').each(function(index, el) {
 						var elOrder = parseInt($(el).data('order'));
 
@@ -65,6 +64,11 @@
 					}
 				});
 			});
+		},
+		onRemove: function(e) {
+			var recipe_id = $(e.item).data('recipe-id');
+
+			$('#grocery_list li[data-recipe-id=' + recipe_id + ']').remove();
 		}
 	});
 
