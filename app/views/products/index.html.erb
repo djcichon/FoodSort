@@ -1,7 +1,7 @@
 <h1>Products</h1>
 
 <%= form_tag products_path, id: 'products_form' do %>
-	<div class="col-md-6">
+	<div class="col-md-3">
 		<h2>Ordered</h2>
 		<ol id="ordered_products" class="sortable_list">
 			<% @ordered_products.each_with_index do |product, index| %>
@@ -16,7 +16,7 @@
 	</div>
 <% end %>
 
-<div class="col-md-6">
+<div class="col-md-3">
 	<h2>Unordered</h2>
 	<ul id="unordered_products" class="sortable_list">
 		<% @unordered_products.each_with_index do |product, index| %>
