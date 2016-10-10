@@ -4,7 +4,7 @@
 <%= f.label :category %>
 <%= f.text_field :category, class: 'form-control' %>
 
-<h2>Ingredients (<%= @recipe.recipe_products.size %>)</h2> 
+<h2>Ingredients (<span id="ingredient_counter"><%= @recipe.recipe_products.size %></span>)</h2> 
 <ul id='ingredient_list'>
 	<%= f.fields_for :recipe_products do |product_form| %>
 		<li>
@@ -22,11 +22,13 @@
 		var $new_ingredient_name = $('#new_ingredient_name');
     var name = $new_ingredient_name.val();
 		var $list = $('#ingredient_list');
+		var $ingredient_counter = $('#ingredient_counter');
 
 		// Find the last element with data-index to calculate the next one
 		var next_index = 0;
 		var $data_indices = $('input[data-index]');
 		
+		//TODO: Can next_index = $data_indices.length?
 		if($data_indices.length > 0) {
 			next_index = $data_indices.last().data('index') + 1;
 		}
@@ -37,6 +39,8 @@
 								 'id="recipe_products_attributes_' + next_index + '_name" />';
 
 		$list.append('<li>' + name + hidden + '</li>');
+
+		$ingredient_counter.html(next_index + 1);
 
 		$new_ingredient_name.val('');
 	});
