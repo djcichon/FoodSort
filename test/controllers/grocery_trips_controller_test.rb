@@ -1,13 +1,19 @@
 require 'test_helper'
 
 class GroceryTripsControllerTest < ActionDispatch::IntegrationTest
+	def setup
+		@user = users(:doug)
+	end
+
   test "should get new" do
-    get grocery_trips_new_url
+    get new_grocery_trip_url
     assert_response :success
   end
 
   test "should get edit" do
-    get grocery_trips_edit_url
+		trip = @user.grocery_trips.create
+
+    get edit_grocery_trip_url(trip)
     assert_response :success
   end
 

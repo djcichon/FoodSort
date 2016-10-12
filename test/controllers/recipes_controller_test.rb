@@ -1,23 +1,24 @@
 require 'test_helper'
 
-class RecipesControllerTest < ActionDispatch::IntegrationTest
-  test "should get new" do
-    get recipes_new_url
-    assert_response :success
-  end
+class RecipesControllerTest < ActionController::TestCase
+	include Devise::Test::ControllerHelpers
 
-  test "should get create" do
-    get recipes_create_url
+	def setup
+		@user = users(:doug)
+		@request.env["devise.mapping"] = Devise.mappings[:admin]
+
+		sign_in @user
+	end
+
+  test "should get new" do
+    get new_recipe_path
     assert_response :success
   end
 
   test "should get edit" do
-    get recipes_edit_url
-    assert_response :success
-  end
+		recipe = @user.recipes.create(name: "Food!")
 
-  test "should get update" do
-    get recipes_update_url
+    get edit_recipe_path(recipe)
     assert_response :success
   end
 
