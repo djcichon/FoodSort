@@ -22,13 +22,9 @@
 </div>
 
 <script>
-	//TODO: Implement a way to remove a meal from the list.  Each ingredient should
-  //TODO: be marked so it can be easily removed.
-	Sortable.create($('#recipe_list')[0], { group: { name: "recipes" } });
-
-	Sortable.create($('#meal_list')[0], { 
-		group: { name: "recipes" },
-		onAdd: function(e) {
+	// turbolinks:load is similar to on ready, but triggers when turbolinks loads a new <body>
+	$(document).on('turbolinks:load', function() {
+		function addMeal(e) {
 			var recipe_id = $(e.item).data('recipe-id');
 
 			$.ajax( { url: '<%= grocery_trips_get_ingredients_url %>', 
@@ -39,37 +35,54 @@
 
 				$.each(json, function( index, el ) {
 					var order = (el.order == null ? -1 : parseInt(el.order));
-					var newLi = '<li data-order="' + order + '" data-recipe-id="' + recipe_id + '">' + el.name + '</li>';
 
-
-					// Find the correct position in the grocery list
-					var $higherLi = null;
-					$groceryList.find('li').each(function(index, el) {
-						var elOrder = parseInt($(el).data('order'));
-
-						if(elOrder > order) {
-							$higherLi = $(el);
-
-							return false;
-						}
-					});
-
-					// Add this li before the higher one
-					if($higherLi != null) {
-						$higherLi.before(newLi);
-					}
-					// If a higher one wasn't found, just add it to the end
-					else {
-						$groceryList.append(newLi);
-					}
+					var $liToAddBefore = findLiToAddBefore($groceryList, order);
+					addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, el.name);
 				});
 			});
-		},
-		onRemove: function(e) {
-			var recipe_id = $(e.item).data('recipe-id');
-
-			$('#grocery_list li[data-recipe-id=' + recipe_id + ']').remove();
 		}
+
+		function removeMeal(e) {
+				var recipe_id = $(e.item).data('recipe-id');
+
+				$('#grocery_list li[data-recipe-id=' + recipe_id + ']').remove();
+		}
+
+		function findLiToAddBefore($groceryList, order) {
+			var $higherLi = null;
+			$groceryList.find('li').each(function(index, el) {
+				var elOrder = parseInt($(el).data('order'));
+
+				if(elOrder > order) {
+					$higherLi = $(el);
+
+					return false;
+				}
+			});
+
+			return $higherLi;
+		}
+
+		function addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, name) {
+			var newLi = '<li data-order="' + order + '" data-recipe-id="' + recipe_id + '">' + name + '</li>';
+
+			// Add this li before the higher one
+			if($liToAddBefore != null) {
+				$liToAddBefore.before(newLi);
+			}
+			// If a higher one wasn't found, just add it to the end
+			else {
+				$groceryList.append(newLi);
+			}
+		}
+
+		Sortable.create($('#recipe_list')[0], { group: { name: "recipes" } });
+
+		Sortable.create($('#meal_list')[0], { 
+			group: { name: "recipes" },
+			onAdd: addMeal,
+			onRemove: removeMeal
+		});
 	});
 
 </script>

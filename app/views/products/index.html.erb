@@ -30,16 +30,16 @@
 </div>
 
 <script>
-	var unordered = document.getElementById('unordered_products');
-	var ordered = document.getElementById('ordered_products');
-	var sortable = Sortable.create(unordered, { group: { name: "products", put: false } });
-	var sortable = Sortable.create(ordered, { group: "products" });
+	$(document).on('turbolinks:load', function() {
+		var sortable = Sortable.create($('#unordered_products')[0], { group: { name: "products", put: false } });
+		var sortable = Sortable.create($('#ordered_products')[0], { group: "products" });
 
-	// Set the order on each item in the list before submitting
-	// This assumes jquery returns these in the order they appear on the page
-	$('#products_form').submit(function(e) {
-		$('#ordered_products .order').each(function(index, el) {
-			$(el).val(index);	
+		// Set the order on each item in the list before submitting
+		// This assumes jquery returns these in the order they appear on the page
+		$('#products_form').submit(function(e) {
+			$('#ordered_products .order').each(function(index, el) {
+				$(el).val(index);	
+			});
 		});
 	});
 </script>
