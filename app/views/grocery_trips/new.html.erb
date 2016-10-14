@@ -76,13 +76,21 @@
 			}
 		}
 
-		Sortable.create($('#recipe_list')[0], { group: { name: "recipes" } });
+		var recipe_list = document.getElementById('recipe_list');
+		var meal_list = document.getElementById('meal_list');
 
-		Sortable.create($('#meal_list')[0], { 
-			group: { name: "recipes" },
-			onAdd: addMeal,
-			onRemove: removeMeal
-		});
+		//TODO: Is this really necessary?  This is because turbolinks causes this to run on every page.
+		if(recipe_list) {
+			Sortable.create(recipe_list, { group: { name: "recipes" } });
+		}
+
+		if(meal_list) {
+			Sortable.create(meal_list, { 
+				group: { name: "recipes" },
+				onAdd: addMeal,
+				onRemove: removeMeal
+			});
+		}
 	});
 
 </script>
