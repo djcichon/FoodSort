@@ -30,25 +30,20 @@
 </div>
 
 <script>
-	document.addEventListener("turbolinks:load", function() {
-		var unordered = document.getElementById('unordered_products');
-		var ordered = document.getElementById('ordered_products');
+(function() {
+	console.log("hi! ");
+	var unordered = document.getElementById('unordered_products');
+	var ordered = document.getElementById('ordered_products');
 
-		//TODO: Is this really necessary?  This is because turbolinks causes this to run on every page.
-		if(unordered) {
-			Sortable.create(unordered, { group: { name: "products", put: false } });
-		}
+	Sortable.create(unordered, { group: { name: "products", put: false } });
+	Sortable.create(ordered,   { group: "products" });
 
-		if(ordered) {
-			Sortable.create(ordered,   { group: "products" });
-		}
-
-		// Set the order on each item in the list before submitting
-		// This assumes jquery returns these in the order they appear on the page
-		$('#products_form').submit(function(e) {
-			$('#ordered_products .order').each(function(index, el) {
-				$(el).val(index);	
-			});
+	// Set the order on each item in the list before submitting
+	// This assumes jquery returns these in the order they appear on the page
+	$('#products_form').submit(function(e) {
+		$('#ordered_products .order').each(function(index, el) {
+			$(el).val(index);	
 		});
 	});
+}());
 </script>

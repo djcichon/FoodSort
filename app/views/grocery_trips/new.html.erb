@@ -22,75 +22,68 @@
 </div>
 
 <script>
-	// turbolinks:load is similar to on ready, but triggers when turbolinks loads a new <body>
-	$(document).on('turbolinks:load', function() {
-		function addMeal(e) {
+(function() {
+	function addMeal(e) {
+		var recipe_id = $(e.item).data('recipe-id');
+
+		$.ajax( { url: '<%= grocery_trips_get_ingredients_url %>', 
+							data: { recipe_id: recipe_id } 
+		})
+		.done(function(json) {
+			var $groceryList = $('#grocery_list');
+
+			$.each(json, function( index, el ) {
+				var order = (el.order == null ? -1 : parseInt(el.order));
+
+				var $liToAddBefore = findLiToAddBefore($groceryList, order);
+				addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, el.name);
+			});
+		});
+	}
+
+	function removeMeal(e) {
 			var recipe_id = $(e.item).data('recipe-id');
 
-			$.ajax( { url: '<%= grocery_trips_get_ingredients_url %>', 
-								data: { recipe_id: recipe_id } 
-			})
-			.done(function(json) {
-				var $groceryList = $('#grocery_list');
+			$('#grocery_list li[data-recipe-id=' + recipe_id + ']').remove();
+	}
 
-				$.each(json, function( index, el ) {
-					var order = (el.order == null ? -1 : parseInt(el.order));
+	function findLiToAddBefore($groceryList, order) {
+		var $higherLi = null;
+		$groceryList.find('li').each(function(index, el) {
+			var elOrder = parseInt($(el).data('order'));
 
-					var $liToAddBefore = findLiToAddBefore($groceryList, order);
-					addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, el.name);
-				});
-			});
-		}
+			if(elOrder > order) {
+				$higherLi = $(el);
 
-		function removeMeal(e) {
-				var recipe_id = $(e.item).data('recipe-id');
-
-				$('#grocery_list li[data-recipe-id=' + recipe_id + ']').remove();
-		}
-
-		function findLiToAddBefore($groceryList, order) {
-			var $higherLi = null;
-			$groceryList.find('li').each(function(index, el) {
-				var elOrder = parseInt($(el).data('order'));
-
-				if(elOrder > order) {
-					$higherLi = $(el);
-
-					return false;
-				}
-			});
-
-			return $higherLi;
-		}
-
-		function addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, name) {
-			var newLi = '<li data-order="' + order + '" data-recipe-id="' + recipe_id + '">' + name + '</li>';
-
-			// Add this li before the higher one
-			if($liToAddBefore != null) {
-				$liToAddBefore.before(newLi);
+				return false;
 			}
-			// If a higher one wasn't found, just add it to the end
-			else {
-				$groceryList.append(newLi);
-			}
-		}
+		});
 
-		var recipe_list = document.getElementById('recipe_list');
-		var meal_list = document.getElementById('meal_list');
+		return $higherLi;
+	}
 
-		//TODO: Is this really necessary?  This is because turbolinks causes this to run on every page.
-		if(recipe_list) {
-			Sortable.create(recipe_list, { group: { name: "recipes" } });
-		}
+	function addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, name) {
+		var newLi = '<li data-order="' + order + '" data-recipe-id="' + recipe_id + '">' + name + '</li>';
 
-		if(meal_list) {
-			Sortable.create(meal_list, { 
-				group: { name: "recipes" },
-				onAdd: addMeal,
-				onRemove: removeMeal
-			});
+		// Add this li before the higher one
+		if($liToAddBefore != null) {
+			$liToAddBefore.before(newLi);
 		}
+		// If a higher one wasn't found, just add it to the end
+		else {
+			$groceryList.append(newLi);
+		}
+	}
+
+	var recipe_list = document.getElementById('recipe_list');
+	var meal_list = document.getElementById('meal_list');
+
+	Sortable.create(recipe_list, { group: { name: "recipes" } });
+
+	Sortable.create(meal_list, { 
+		group: { name: "recipes" },
+		onAdd: addMeal,
+		onRemove: removeMeal
 	});
-
+}());
 </script>
