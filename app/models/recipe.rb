@@ -2,7 +2,7 @@ class Recipe < ApplicationRecord
   belongs_to :user
 
 	has_many :dishes
-	has_many :recipe_products, :inverse_of => :recipe
+	has_many :recipe_products, :inverse_of => :recipe, :dependent => :destroy
 
 	has_many :grocery_trips, through: :dishes
 	has_many :products, through: :recipe_products
