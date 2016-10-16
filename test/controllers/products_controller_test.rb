@@ -1,8 +1,15 @@
 require 'test_helper'
 
-class ProductsControllerTest < ActionDispatch::IntegrationTest
+class ProductsControllerTest < ActionController::TestCase
+	include Devise::Test::ControllerHelpers
+
+	def setup
+		@user = users(:doug)
+		sign_in @user
+	end
+
   test "should get index" do
-    get products_url
+    get :index
     assert_response :success
   end
 

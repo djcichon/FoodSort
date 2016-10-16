@@ -5,20 +5,18 @@ class RecipesControllerTest < ActionController::TestCase
 
 	def setup
 		@user = users(:doug)
-		@request.env["devise.mapping"] = Devise.mappings[:admin]
-
 		sign_in @user
 	end
 
   test "should get new" do
-    get new_recipe_path
+    get :new
     assert_response :success
   end
 
   test "should get edit" do
 		recipe = @user.recipes.create(name: "Food!")
 
-    get edit_recipe_path(recipe)
+    get :edit, params: { id: recipe.id }
     assert_response :success
   end
 
