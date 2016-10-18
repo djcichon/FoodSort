@@ -5,10 +5,31 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
 	def setup
 		@user = users(:doug)
-		sign_in @user
+	end
+
+	test "new should redirect to login when not signed in" do
+		get new_recipe_url
+		assert_redirected_to new_user_session_url
+	end
+
+	test "create should redirect to login when not signed in" do
+		post recipes_url
+		assert_redirected_to new_user_session_url
+	end
+
+	test "edit should redirect to login when not signed in" do
+		get edit_recipe_url(1)
+		assert_redirected_to new_user_session_url
+	end
+
+	test "update should redirect to login when not signed in" do
+		patch recipe_url(1)
+		assert_redirected_to new_user_session_url
 	end
 
   test "should get new" do
+		sign_in @user
+
     get new_recipe_url
     assert_response :success
 
@@ -17,6 +38,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
 	test "create new recipe" do
+		sign_in @user
+
 		params = { 
 			recipe: { 
 				name: "Chocolate covered kale", 
@@ -42,6 +65,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 	end
 
 	test "error while creating recipe" do
+		sign_in @user
+		
 		# Create a recipe which with the same name
 		recipe = @user.recipes.create(name: "Chocolate covered kale")
 
@@ -67,6 +92,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 	end
 
   test "should get edit" do
+		sign_in @user
+		
 		recipe = @user.recipes.create(name: "Food!")
 		recipe.recipe_products.create(name: "Bacon")
 
@@ -79,6 +106,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
 	test "update a recipe" do
+		sign_in @user
+
 		# Create a recipe to update
 		recipe = @user.recipes.create(name: "Chocolate covered kale")
 
@@ -108,6 +137,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 	end
 
 	test "error while updating recipe" do
+		sign_in @user
+
 		# Create a recipe to update
 		recipe = @user.recipes.create(name: "Chocolate covered kale")
 
