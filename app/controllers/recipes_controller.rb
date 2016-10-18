@@ -4,16 +4,12 @@ class RecipesController < ApplicationController
   end
 
   def create
-		puts "test"
-		puts params.inspect
-		puts recipe_params.inspect
 		@recipe = current_user.recipes.create(recipe_params)
 
 		if @recipe.save
 			flash[:success] = "Recipe successfully added"
 			redirect_to root_url
 		else
-			puts @recipe.errors.inspect
 			render 'new'
 		end
 
@@ -24,9 +20,6 @@ class RecipesController < ApplicationController
   end
 
   def update
-		puts "test"
-		puts params.inspect
-		puts recipe_params.inspect
 		@recipe = Recipe.find(params[:id])
 
 		if @recipe.update_attributes(recipe_params)
