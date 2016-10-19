@@ -8,23 +8,21 @@ class ProductsController < ApplicationController
   end
 
 	def update
-		puts "All params: " + params.inspect
+		Product.transaction do
+			params[:products].each do |key, product_params|
+				id = product_params[:id].to_i
+				order = product_params[:order].to_i
 
-		params[:products].each do |key, product_params|
-			puts "Product params: " + product_params.inspect
-			id = product_params[:id].to_i
-			product = Product.find(id)
-			product.order = product_params[:order].to_i
-
-			puts product.inspect
-			
-			if !product.save
-				# TODO: Handle error
+				product = Product.find(id)
+				product.order = order
+				
+				if !product.save
+					flash[:danger] = "An error occurred while saving your product ordering, please try again."
+					raise ActiveRecord::Rollback
+				end
 			end
 		end
 
-		# TODO: This redirect doesn't seem to be working, but orders are being saved
-		# TODO: It just stays on the same page w/ a disabled save button
 		redirect_to products_path
 	end
 end
