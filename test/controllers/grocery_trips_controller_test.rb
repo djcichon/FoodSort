@@ -12,6 +12,11 @@ class GroceryTripsControllerTest < ActionDispatch::IntegrationTest
 		assert_redirected_to new_user_session_url
 	end
 
+	test "get_ingredients should redirect to login when not signed in" do
+		get grocery_trips_get_ingredients_url
+		assert_redirected_to new_user_session_url
+	end
+
   test "should get new" do
 		sign_in @user
 
