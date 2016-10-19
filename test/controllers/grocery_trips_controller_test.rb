@@ -20,29 +20,25 @@ class GroceryTripsControllerTest < ActionDispatch::IntegrationTest
   test "should get new" do
 		sign_in @user
 
-		@user.recipes.create(name: "Hot dogs")
-		@user.recipes.create(name: "Meatloaf")
-		@user.recipes.create(name: "Tacos")
-
     get new_grocery_trip_url
     assert_response :success
 
 		assert_select "h1", "Create Grocery Trip"
 
 		# Should list all recipes
-		assert_select "#recipe_list li", "Hot dogs"
-		assert_select "#recipe_list li", "Meatloaf"
-		assert_select "#recipe_list li", "Tacos"
+		@user.recipes.each do |recipe|
+			assert_select "#recipe_list li", recipe.name
+		end
   end
 
 	test "get ingredients for existing recipe" do
 		sign_in @user
 
-		recipe      = @user.recipes.create(name: "Hot dogs")
-		hotdogs     = recipe.recipe_products.create(name: "Hot dogs").product
-		hotdog_buns = recipe.recipe_products.create(name: "Hot dog buns").product
-		ketchup     = recipe.recipe_products.create(name: "Ketchup").product
-		mustard     = recipe.recipe_products.create(name: "Mustard").product
+		recipe      = recipes(:hotdogs)
+		hotdogs     = products(:hotdogs)
+		hotdog_buns = products(:hotdog_buns)
+		ketchup     = products(:ketchup)
+		mustard     = products(:mustard)
 
 		hotdogs.order     = 1
 		hotdog_buns.order = 2

@@ -1,9 +1,35 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+hotdogs_hotdogs:
+  recipe: hotdogs
+  product: hotdogs
 
-one:
-  recipe: one
-  product: one
+hotdogs_hotdog_buns:
+  recipe: hotdogs
+  product: hotdog_buns
 
-two:
-  recipe: two
-  product: two
+hotdogs_mustard:
+  recipe: hotdogs
+  product: mustard
+
+hotdogs_ketchup:
+  recipe: hotdogs
+  product: ketchup
+
+chilidogs_hotdogs:
+  recipe: chilidogs
+  product: hotdogs
+
+chilidogs_hotdog_buns:
+  recipe: chilidogs
+  product: hotdog_buns
+
+chilidogs_mustard:
+  recipe: chilidogs
+  product: mustard
+
+chilidogs_ketchup:
+  recipe: chilidogs
+  product: ketchup
+
+chilidogs_manwich:
+  recipe: chilidogs
+  product: manwich

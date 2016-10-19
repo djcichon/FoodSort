@@ -94,15 +94,17 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   test "should get edit" do
 		sign_in @user
 		
-		recipe = @user.recipes.create(name: "Food!")
-		recipe.recipe_products.create(name: "Bacon")
+		recipe = recipes(:hotdogs)
 
     get edit_recipe_url(recipe)
     assert_response :success
 
 		assert_select "h1", "Edit Recipe"
-		assert_select "h2", "Ingredients (1)"
-		assert_select "li", "Bacon"
+		assert_select "h2", "Ingredients (#{recipe.recipe_products.count})"
+
+		recipe.recipe_products.each do |rp|
+			assert_select "li", rp.name
+		end
   end
 
 	test "update a recipe" do

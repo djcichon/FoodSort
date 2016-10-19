@@ -6,11 +6,12 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 	def setup
 		@user = users(:doug)
 
-		@recipe = @user.recipes.create(name: "Hot dogs")
-		@hotdogs = @recipe.recipe_products.create(name: "Hot dogs").product
-		@hotdog_buns = @recipe.recipe_products.create(name: "Hot dog buns").product
-		@ketchup = @recipe.recipe_products.create(name: "Ketchup").product
-		@mustard = @recipe.recipe_products.create(name: "Mustard").product
+		@recipe = recipes(:hotdogs)
+
+		@hotdogs = products(:hotdogs)
+		@hotdog_buns = products(:hotdog_buns)
+		@ketchup = products(:ketchup)
+		@mustard = products(:mustard)
 	end
 
 	test "new should redirect to login when not signed in" do
@@ -26,11 +27,12 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
 		assert_select "#unordered_products", 1
-		assert_select "#unordered_products li", 4
-		assert_select "#unordered_products li", "Hot dogs"
-		assert_select "#unordered_products li", "Hot dog buns"
-		assert_select "#unordered_products li", "Ketchup"
-		assert_select "#unordered_products li", "Mustard"
+		assert_select "#unordered_products li", Product.count
+
+		#TODO: I need a helper for getting all products which belong to a user
+		Product.all.each do |product|
+			assert_select "#unordered_products li", product.name
+		end
 
 		@recipe.products.each_with_index do |product, i|
 			product.order = i

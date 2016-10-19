@@ -1,11 +1,9 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+hotdogs:
+  name: Hot Dogs
+  category: Mystery Meat
+  user: doug
 
-one:
-  name: MyString
-  category: MyString
-  user: one
-
-two:
-  name: MyString
-  category: MyString
-  user: two
+chilidogs:
+  name: Chili Dogs
+  category: Mystery Meat
+  user: doug
