@@ -7,51 +7,51 @@
 
 <h2>Ingredients (<span id="ingredient_counter"><%= @recipe.recipe_products.size %></span>)</h2> 
 <ul id='ingredient_list'>
-	<%= f.fields_for :recipe_products do |product_form| %>
-		<li>
-			<%= product_form.object.name %>
-			<%= product_form.hidden_field :name, 'data-index': product_form.options[:child_index] %>
-		</li> 
-	<% end %>
+  <%= f.fields_for :recipe_products do |product_form| %>
+    <li>
+      <%= product_form.object.name %>
+      <%= product_form.hidden_field :name, 'data-index': product_form.options[:child_index] %>
+    </li> 
+  <% end %>
 </ul>
 
 <%= text_field :new_ingredient, :name %>
 <a id="add_ingredient_button" class="btn btn-primary" href="#" data-turbolinks="false">Add Ingredient</a>
 
 <script>
-	$('#add_ingredient_button').click(function() {
-		var $new_ingredient_name = $('#new_ingredient_name');
+  $('#add_ingredient_button').click(function() {
+    var $new_ingredient_name = $('#new_ingredient_name');
     var name = $new_ingredient_name.val();
-		var $list = $('#ingredient_list');
-		var $ingredient_counter = $('#ingredient_counter');
+    var $list = $('#ingredient_list');
+    var $ingredient_counter = $('#ingredient_counter');
 
-		// Find the last element with data-index to calculate the next one
-		var next_index = 0;
-		var $data_indices = $('input[data-index]');
-		
-		//TODO: Can next_index = $data_indices.length?
-		if($data_indices.length > 0) {
-			next_index = $data_indices.last().data('index') + 1;
-		}
+    // Find the last element with data-index to calculate the next one
+    var next_index = 0;
+    var $data_indices = $('input[data-index]');
+    
+    //TODO: Can next_index = $data_indices.length?
+    if($data_indices.length > 0) {
+      next_index = $data_indices.last().data('index') + 1;
+    }
 
-		//TODO: Can this be rendered more simply with a rails helper?
-		var hidden = '<input data-index="' + next_index + '" type="hidden" value="' + name + 
-						 		 '" name="recipe[recipe_products_attributes][' + next_index + '][name]"' +
-								 'id="recipe_products_attributes_' + next_index + '_name" />';
+    //TODO: Can this be rendered more simply with a rails helper?
+    var hidden = '<input data-index="' + next_index + '" type="hidden" value="' + name + 
+                 '" name="recipe[recipe_products_attributes][' + next_index + '][name]"' +
+                 'id="recipe_products_attributes_' + next_index + '_name" />';
 
-		$list.append('<li>' + name + hidden + '</li>');
+    $list.append('<li>' + name + hidden + '</li>');
 
-		$ingredient_counter.html(next_index + 1);
+    $ingredient_counter.html(next_index + 1);
 
-		$new_ingredient_name.val('');
-	});
+    $new_ingredient_name.val('');
+  });
 
-	$('#new_ingredient_name').keydown(function(e) {
-		if(e.which == 13) {
-			e.preventDefault();
-			$('#add_ingredient_button').click();
+  $('#new_ingredient_name').keydown(function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      $('#add_ingredient_button').click();
 
-			return false;
-		}
-	});
+      return false;
+    }
+  });
 </script>

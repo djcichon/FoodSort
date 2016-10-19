@@ -1,13 +1,13 @@
 <h1>Edit Recipe</h1>
 
 <div class="row">
-	<%= form_for(@recipe) do |f| %>
-		<div class="row">
-			<%= render 'fields', f: f %>
-		</div>
+  <%= form_for(@recipe) do |f| %>
+    <div class="row">
+      <%= render 'fields', f: f %>
+    </div>
 
-		<div class="row">
-			<%= f.submit "Update Recipe", class: 'btn btn-primary' %>
-		</div>
-	<% end %>
+    <div class="row">
+      <%= f.submit "Update Recipe", class: 'btn btn-primary' %>
+    </div>
+  <% end %>
 </div>

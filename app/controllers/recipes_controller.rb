@@ -1,37 +1,37 @@
 class RecipesController < ApplicationController
   def new
-		@recipe = Recipe.new
+    @recipe = Recipe.new
   end
 
   def create
-		@recipe = current_user.recipes.create(recipe_params)
+    @recipe = current_user.recipes.create(recipe_params)
 
-		if @recipe.save
-			flash[:success] = "Recipe successfully added"
-			redirect_to root_url
-		else
-			render 'new'
-		end
+    if @recipe.save
+      flash[:success] = "Recipe successfully added"
+      redirect_to root_url
+    else
+      render 'new'
+    end
 
   end
 
   def edit
-		@recipe = Recipe.find(params[:id])
+    @recipe = Recipe.find(params[:id])
   end
 
   def update
-		@recipe = Recipe.find(params[:id])
+    @recipe = Recipe.find(params[:id])
 
-		if @recipe.update_attributes(recipe_params)
-			flash[:success] = "Recipe successfully updated"
-			redirect_to root_url
-		else
-			render 'edit'
-		end
+    if @recipe.update_attributes(recipe_params)
+      flash[:success] = "Recipe successfully updated"
+      redirect_to root_url
+    else
+      render 'edit'
+    end
   end
 
-	private
-		def recipe_params
-			params.require(:recipe).permit(:name, :category, recipe_products_attributes: [:name, :id])
-		end
+  private
+    def recipe_params
+      params.require(:recipe).permit(:name, :category, recipe_products_attributes: [:name, :id])
+    end
 end

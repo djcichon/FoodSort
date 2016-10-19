@@ -1,11 +1,11 @@
 <h1>Add Recipe</h1>
 
 <%= form_for(@recipe) do |f| %>
-	<div class="row">
-		<%= render 'fields', f: f %>
-	</div>
+  <div class="row">
+    <%= render 'fields', f: f %>
+  </div>
 
-	<div class="row">
-		<%= f.submit "Create Recipe", class: 'btn btn-primary' %>
-	</div>
+  <div class="row">
+    <%= f.submit "Create Recipe", class: 'btn btn-primary' %>
+  </div>
 <% end %>

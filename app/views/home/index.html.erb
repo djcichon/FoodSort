@@ -1,37 +1,37 @@
 <% unless user_signed_in? %>
-	<h1>Welcome to Food!</h1>
-	<p>Don't have an account yet?</p>
+  <h1>Welcome to Food!</h1>
+  <p>Don't have an account yet?</p>
 
-	<%= link_to "Create account", new_user_registration_path, class: "btn btn-primary"%>
+  <%= link_to "Create account", new_user_registration_path, class: "btn btn-primary"%>
 <% else %>
-	<%= link_to "New Recipe", new_recipe_path, class: "btn btn-primary" %>
-	<%= link_to "New Grocery List", new_grocery_trip_path, class: "btn btn-primary" %>
+  <%= link_to "New Recipe", new_recipe_path, class: "btn btn-primary" %>
+  <%= link_to "New Grocery List", new_grocery_trip_path, class: "btn btn-primary" %>
 
-	<h1>Your Recipes</h1>
-	<table class="table">
-		<tr>
-			<th>Name</th>
-			<th>Category</th>
-		</tr>
+  <h1>Your Recipes</h1>
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
 
-		<% @recipes.each do |recipe| %>
-			<tr>
-				<td><%= link_to recipe.name, edit_recipe_path(recipe) %></td>
-				<td><%= recipe.category %></td>
-			</tr>
-		<% end %>
-	</table>
+    <% @recipes.each do |recipe| %>
+      <tr>
+        <td><%= link_to recipe.name, edit_recipe_path(recipe) %></td>
+        <td><%= recipe.category %></td>
+      </tr>
+    <% end %>
+  </table>
 
-	<h1>Your Grocery Trips</h1>
-	<table class="table">
-		<tr>
-			<th>Label</th>
-		</tr>
+  <h1>Your Grocery Trips</h1>
+  <table class="table">
+    <tr>
+      <th>Label</th>
+    </tr>
 
-		<% @grocery_trips.each do |grocery_trip| %>
-			<tr>
-				<td><%= link_to grocery_trip.label, edit_grocery_trip_path(grocery_trip) %></td>
-			</tr>
-		<% end %>
-	</table>
+    <% @grocery_trips.each do |grocery_trip| %>
+      <tr>
+        <td><%= link_to grocery_trip.label, edit_grocery_trip_path(grocery_trip) %></td>
+      </tr>
+    <% end %>
+  </table>
 <% end %>
