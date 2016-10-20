@@ -9,7 +9,7 @@ class Recipe < ApplicationRecord
 
   accepts_nested_attributes_for :recipe_products
   #TODO: May not want this, could lead to product names changing accidentally.  Not sure yet.
-  accepts_nested_attributes_for :products
+  # accepts_nested_attributes_for :products
   validates_uniqueness_of :name, :scope => :user_id
 
   before_save :combine_duplicate_products
