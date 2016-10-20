@@ -4,9 +4,10 @@ $navbar-inverse-border:            #777;
 $navbar-inverse-link-color:        #333;
 $navbar-inverse-link-hover-color:  #555 !default;
 $navbar-inverse-brand-hover-color: #555 !default;
-$navbar-inverse-link-active-bg:    lighten($navbar-inverse-bg, 7%) !default;
+$navbar-inverse-link-active-bg:    lighten($navbar-inverse-bg, 5%) !default;
 
-$brand-primary: #077;
+$brand-primary: #006FA7;
+$body-bg: #FFF3DF;
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
