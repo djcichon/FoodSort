@@ -1,5 +1,15 @@
+// Customize some colors -before- adding bootstrap
+$navbar-inverse-bg:                #F63;
+$navbar-inverse-border:            #777;
+$navbar-inverse-link-color:        #333;
+$navbar-inverse-link-hover-color:  #555 !default;
+$navbar-inverse-brand-hover-color: #555 !default;
+$navbar-inverse-link-active-bg:    lighten($navbar-inverse-bg, 7%) !default;
+
+$brand-primary: #077;
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
 
 .sortable_list {
 	min-height: 50px;
@@ -14,4 +24,8 @@ body {
 
 .flash-message {
 	margin-top: 10px;
+}
+
+a {
+  font-weight: bold;
 }
