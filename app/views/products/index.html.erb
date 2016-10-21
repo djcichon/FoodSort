@@ -3,9 +3,9 @@
 <%= form_tag products_path, id: 'products_form' do %>
   <div class="col-md-3">
     <h2>Ordered</h2>
-    <ol id="ordered_products" class="sortable_list">
+    <ol id="ordered_products" class="list-of-cards">
       <% @ordered_products.each_with_index do |product, index| %>
-        <li>
+        <li class="card">
           <%= product.name %>
           <%= hidden_field_tag "products[#{index}][id]", product.id %>
           <%= hidden_field_tag "products[#{index}][order]", product.order, class: 'order' %>
@@ -18,9 +18,9 @@
 
 <div class="col-md-3">
   <h2>Unordered</h2>
-  <ul id="unordered_products" class="sortable_list">
+  <ul id="unordered_products" class="list-of-cards">
     <% @unordered_products.each_with_index do |product, index| %>
-      <li>
+      <li class="card">
         <%= product.name %>
         <%= hidden_field_tag "products[#{@ordered_products.size + index}][id]", product.id %>
         <%= hidden_field_tag "products[#{@ordered_products.size + index}][order]", "", class: 'order'%>

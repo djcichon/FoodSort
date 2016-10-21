@@ -30,3 +30,47 @@ body {
 a {
   font-weight: bold;
 }
+
+.list-of-cards {
+  padding: 10px;
+  background-color: lighten($brand-primary, 00%);
+  box-shadow: 5px 5px 5px #888888;
+  border-radius: 5px;
+
+  .card {
+    width: 100%;
+    background-color: white;
+    border-color: black;
+    margin-bottom: 5px;
+    padding: 5px 10px 5px 10px;
+    box-shadow: 2px 2px 2px #888888;
+    display: inline-block;
+
+    .recipe-name {
+      max-width: 135px;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .recipe-controls {
+      margin-top: -10px;
+      margin-bottom: -5px;
+      display: inline-block;
+      float: right;
+
+      .recipe-count {
+        font-size: 1.5em;
+      }
+
+      .recipe-minus {
+        font-size: 2.0em;
+      }
+
+      .recipe-plus {
+        font-size: 2.0em;
+      }
+    }
+  }
+}
+
+

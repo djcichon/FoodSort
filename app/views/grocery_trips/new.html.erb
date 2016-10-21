@@ -1,30 +1,38 @@
 <h1>Create Grocery Trip</h1>
 
 <div class="col-md-3">
-  <h2>Meals to Cook</h2>
-  <ul id="meal_list" class="sortable_list">
-  </ul>
-</div>
-<div class="col-md-3 col-md-offset-1">
-  <h2>My Recipes</h2>
-  <ul id="recipe_list" class="sortable_list">
+  <h2>Select Recipes</h2>
+  <div id="recipe_list" class="list-of-cards">
     <% @recipes.each do |recipe| %>
-      <li data-recipe-id="<%= recipe.id %>">
-        <%= recipe.name %>
-      </li>
+      <div class="card" data-recipe-id="<%= recipe.id %>">
+        <div class="recipe-name">
+          <%= recipe.name %>
+        </div>
+        <div class="recipe-controls">
+          <span class="recipe-minus">-</span>
+          <span class="recipe-count">
+            0
+          </span>
+          <span class="recipe-plus">+</span>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
 </div>
+
 <div class="col-md-3 col-md-offset-1">
   <h2>Grocery List</h2>
-  <ol id="grocery_list" class="sortable_list">
-  </ol>
+  <div id="grocery_list" class="list-of-cards">
+  </div>
 </div>
 
 <script>
 (function() {
-  function addMeal(e) {
-    var recipe_id = $(e.item).data('recipe-id');
+  function addMeal() {
+    var $card = $(this).parents('.card');
+    var recipe_id = $card.data('recipe-id');
+    var $count = $card.find('.recipe-count');
+    var new_count = parseInt($count.html()) + 1;
 
     $.ajax( { url: '<%= grocery_trips_get_ingredients_url %>', 
               data: { recipe_id: recipe_id } 
@@ -36,20 +44,28 @@
         var order = (el.order == null ? -1 : parseInt(el.order));
 
         var $liToAddBefore = findLiToAddBefore($groceryList, order);
-        addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, el.name);
+        addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, new_count, el.name);
       });
+
+      $count.html(new_count);
     });
   }
 
-  function removeMeal(e) {
-      var recipe_id = $(e.item).data('recipe-id');
+  function removeMeal() {
+    var $card = $(this).parents('.card');
+    var recipe_id = $card.data('recipe-id');
+    var $count = $card.find('.recipe-count');
+    var current_count = parseInt($count.html());
 
-      $('#grocery_list li[data-recipe-id=' + recipe_id + ']').remove();
+    if(current_count > 0) {
+      $('#grocery_list div[data-recipe-id=' + recipe_id + '][data-recipe-count=' + current_count + ']').remove();
+      $count.html(current_count - 1);
+    }
   }
 
   function findLiToAddBefore($groceryList, order) {
     var $higherLi = null;
-    $groceryList.find('li').each(function(index, el) {
+    $groceryList.find('div').each(function(index, el) {
       var elOrder = parseInt($(el).data('order'));
 
       if(elOrder > order) {
@@ -62,8 +78,11 @@
     return $higherLi;
   }
 
-  function addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, name) {
-    var newLi = '<li data-order="' + order + '" data-recipe-id="' + recipe_id + '">' + name + '</li>';
+  function addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, recipe_count, name) {
+    var newLi = '<div class="card" data-order="' + order + 
+      '" data-recipe-id="' + recipe_id + 
+      '" data-recipe-count="' + recipe_count + 
+      '">' + name + '</li>';
 
     // Add this li before the higher one
     if($liToAddBefore != null) {
@@ -75,15 +94,7 @@
     }
   }
 
-  var recipe_list = document.getElementById('recipe_list');
-  var meal_list = document.getElementById('meal_list');
-
-  Sortable.create(recipe_list, { group: { name: "recipes" } });
-
-  Sortable.create(meal_list, { 
-    group: { name: "recipes" },
-    onAdd: addMeal,
-    onRemove: removeMeal
-  });
+  $('.recipe-plus').on('click', addMeal);
+  $('.recipe-minus').on('click', removeMeal);
 }());
 </script>
