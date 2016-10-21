@@ -1,9 +1,13 @@
 <%= render 'shared/error_messages', object: @recipe %>
-<%= f.label :name %>
-<%= f.text_field :name, class: 'form-control' %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
 
-<%= f.label :category %>
-<%= f.text_field :category, class: 'form-control' %>
+  <div class="form-group">
+    <%= f.label :category %>
+    <%= f.text_field :category, class: 'form-control' %>
+  </div>
 
 <h2>Ingredients (<span id="ingredient_counter"><%= @recipe.recipe_products.size %></span>)</h2> 
 <ul id='ingredient_list'>
@@ -15,8 +19,12 @@
   <% end %>
 </ul>
 
-<%= text_field :new_ingredient, :name %>
-<a id="add_ingredient_button" class="btn btn-primary" href="#" data-turbolinks="false">Add Ingredient</a>
+<div class="form-group">
+  <div class="form-inline">
+      <%= text_field :new_ingredient, :name, class: "form-control" %>
+      <a id="add_ingredient_button" class="btn btn-primary" href="#" data-turbolinks="false">Add Ingredient</a>
+  </div>
+</div>
 
 <script>
   $('#add_ingredient_button').click(function() {
@@ -28,7 +36,7 @@
     // Find the last element with data-index to calculate the next one
     var next_index = 0;
     var $data_indices = $('input[data-index]');
-    
+
     //TODO: Can next_index = $data_indices.length?
     if($data_indices.length > 0) {
       next_index = $data_indices.last().data('index') + 1;
