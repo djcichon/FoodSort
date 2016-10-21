@@ -1,8 +1,24 @@
 <% unless user_signed_in? %>
   <h1>Welcome to FoodSort!</h1>
-  <p>Don't have an account yet?</p>
 
-  <%= link_to "Create account", new_user_registration_path, class: "btn btn-primary"%>
+  <div class="row">
+    <div class="col-md-6">
+      <p>FoodSort allows you to generate a grocery list based on the meals you'd
+         like to cook.  It allows you to set the order ingredients appear at your
+         store, so your grocery list is always sorted they way you want it.</p>
+      <p>To use FoodSort:</p>
+      <ol>
+        <li>Add recipes you'd like to cook</li>
+        <li>Order the ingredients in the order they appear in your grocery store</li>
+        <li>Select the meals you'd like to cook this week</li>
+        <li>Print your grocery list, or copy &amp; paste it to your usual app</li>
+      </ol>
+
+      <p>Don't have an account yet?</p>
+
+      <%= link_to "Create account", new_user_registration_path, class: "btn btn-primary"%>
+    </div>
+  </div>
 <% else %>
   <%= link_to "New Recipe", new_recipe_path, class: "btn btn-primary" %>
   <%= link_to "New Grocery List", new_grocery_trip_path, class: "btn btn-primary" %>
