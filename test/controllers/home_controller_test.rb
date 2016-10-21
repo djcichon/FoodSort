@@ -17,4 +17,20 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'a', 'Create account'
   end
+
+  test "should only see your own recipes" do
+    user = users(:sara)
+    sign_in user
+
+    get root_url
+    assert_response :success
+    assert_select 'a', 'New Recipe'
+
+    assert_select 'table a', user.recipes.size
+
+    user.recipes.each do |recipe|
+      assert_select 'a', recipe.name
+    end
+  end
+
 end
