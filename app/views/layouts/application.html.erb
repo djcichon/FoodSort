@@ -26,10 +26,10 @@
             <li class="<%= current_page?(controller: '/home') ? 'active' : '' %>">
               <%= link_to "Home", root_url %>
             </li>
-            <li class="<%= current_page?(controller: '/products') ? 'active' : '' %>">
-              <%= link_to "Products", products_path %>
-            </li>
             <% if user_signed_in? %>
+              <li class="<%= current_page?(controller: '/products') ? 'active' : '' %>">
+                <%= link_to "Products", products_path %>
+              </li>
               <li><%= link_to "Log out", destroy_user_session_path, :method => :delete %></li>
             <% else %>
               <li><%= link_to "Sign in", new_user_session_path %></li>
