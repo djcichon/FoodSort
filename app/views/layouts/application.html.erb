@@ -23,10 +23,10 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="<%= current_page?(controller: 'home') ? 'active' : '' %>">
+            <li class="<%= current_page?(controller: '/home') ? 'active' : '' %>">
               <%= link_to "Home", root_url %>
             </li>
-            <li class="<%= current_page?(controller: 'products') ? 'active' : '' %>">
+            <li class="<%= current_page?(controller: '/products') ? 'active' : '' %>">
               <%= link_to "Products", products_path %>
             </li>
             <% if user_signed_in? %>
@@ -41,7 +41,9 @@
  
     <div class="container">
       <% flash.each do | message_type, message | %>
-        <%= content_tag(:div, message, class: "alert alert-#{message_type} flash-message") %>
+        <%= content_tag(:div,
+                        message,
+                        class: "alert alert-#{message_type == 'notice' ? 'success' : message_type} flash-message") %>
       <% end %>
 
       <%= yield %>
