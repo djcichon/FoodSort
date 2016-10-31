@@ -168,4 +168,36 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "li", "Chocolate"
     assert_select "li", "Kale"
   end
+
+  test "cannot edit another user's recipe" do
+    recipe = @user.recipes.first
+    other_user = users(:sara)
+
+    sign_in other_user
+
+    get edit_recipe_url(recipe)
+
+    assert_redirected_to root_url
+    assert_equal "Recipe not found", flash[:danger]
+  end
+
+  test "cannot update another user's recipe" do
+    recipe = @user.recipes.first
+    other_user = users(:sara)
+
+    sign_in other_user
+
+    params = { 
+      recipe: { 
+        id: recipe.id,
+        name: "Kale covered chocolate", 
+        category: "Delicious",
+        recipe_products_attributes: [ { name: "Chocolate" }, { name: "Kale" } ]
+      } 
+    }
+
+    patch recipe_url(recipe.id), params: params
+    assert_redirected_to root_url
+    assert_equal "Recipe not found", flash[:danger]
+  end
 end

@@ -16,11 +16,22 @@ class RecipesController < ApplicationController
   end
 
   def edit
-    @recipe = Recipe.find(params[:id])
+    @recipe = current_user.recipes.find_by(id: params[:id])
+
+    unless @recipe
+      flash[:danger] = "Recipe not found"
+      redirect_to root_url
+    end
   end
 
   def update
-    @recipe = Recipe.find(params[:id])
+    @recipe = current_user.recipes.find_by(id: params[:id])
+
+    unless @recipe
+      flash[:danger] = "Recipe not found"
+      redirect_to root_url
+      return
+    end
 
     if @recipe.update_attributes(recipe_params)
       flash[:success] = "Recipe successfully updated"
