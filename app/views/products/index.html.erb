@@ -35,7 +35,7 @@
   var ordered = document.getElementById('ordered_products');
 
   Sortable.create(unordered, { group: { name: "products", put: false } });
-  Sortable.create(ordered,   { group: "products" });
+  Sortable.create(ordered,   { group: "products", scroll: true, delay: 100, scrollSensitivity: 75 });
 
   // Set the order on each item in the list before submitting
   // This assumes jquery returns these in the order they appear on the page
