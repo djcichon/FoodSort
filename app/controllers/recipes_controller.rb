@@ -41,6 +41,26 @@ class RecipesController < ApplicationController
     end
   end
 
+  def destroy
+    recipe = current_user.recipes.find_by(id: params[:id])
+
+    unless recipe
+      flash[:danger] = "Recipe not found"
+      redirect_to root_url
+      return
+    end
+
+    recipe.destroy
+
+    if recipe.destroyed?
+      flash[:success] = "Recipe deleted"
+      redirect_to root_url
+    else
+      flash[:danger] = "An error occurred while deleting recipe"
+      redirect_to root_url
+    end
+  end
+
   private
     def recipe_params
       params.require(:recipe).permit(:name, :category, recipe_products_attributes: [:name, :id])

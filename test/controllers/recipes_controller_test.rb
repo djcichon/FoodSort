@@ -200,4 +200,27 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
     assert_equal "Recipe not found", flash[:danger]
   end
+
+  test "delete a recipe" do
+    sign_in @user
+
+    assert_difference "Recipe.count", -1 do
+      delete recipe_path(@user.recipes.first)
+    end
+
+    assert_redirected_to root_url
+    assert_equal "Recipe deleted", flash[:success]
+  end
+
+  test "cannot delete another user's recipe" do
+    other_user = users(:sara)
+    sign_in other_user
+
+    assert_no_difference "Recipe.count" do
+      delete recipe_path(@user.recipes.first)
+    end
+
+    assert_redirected_to root_url
+    assert_equal "Recipe not found", flash[:danger]
+  end
 end

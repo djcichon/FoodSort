@@ -8,6 +8,8 @@
       <div class="form-group">
         <%= f.button "Update Recipe", class: 'btn btn-primary' %>
         <%= link_to "Cancel", root_url, class: 'btn btn-default' %>
+        <%= link_to "Delete", @recipe, method: :delete, class: 'btn btn-danger',
+            data: { confirm: "Are you sure you want to delete this recipe?" } %>
       </div>
     </div>
   </div>

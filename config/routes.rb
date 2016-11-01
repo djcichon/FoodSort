@@ -6,6 +6,6 @@ Rails.application.routes.draw do
   post 'products' => 'products#update'
   get 'grocery_trips/get_ingredients' => 'grocery_trips#get_ingredients'
   resources :products, only: [:index]
-  resources :recipes, only: [:new, :create, :edit, :update]
+  resources :recipes, only: [:new, :create, :edit, :update, :destroy]
   resources :grocery_trips, only: [:new, :create, :edit, :update]
 end
