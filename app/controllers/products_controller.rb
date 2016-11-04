@@ -21,7 +21,10 @@ class ProductsController < ApplicationController
           raise ActiveRecord::Rollback
         end
       end
+
+      flash[:success] = "Ordering saved successfully"
     end
+
 
     redirect_to products_path
   end

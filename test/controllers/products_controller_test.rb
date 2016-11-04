@@ -66,6 +66,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     post products_url, params: params
 
     assert_nil flash[:danger]
+    assert_not_nil flash[:success]
 
     assert_equal 0, @hotdogs.reload.order
     assert_equal 1, @hotdog_buns.reload.order
@@ -89,6 +90,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     post products_url, params: params
 
     assert_not_nil flash[:danger]
+    assert_nil flash[:success]
 
     # None of the products should be updated
     assert_nil @hotdogs.reload.order
