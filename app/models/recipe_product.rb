@@ -3,7 +3,7 @@ class RecipeProduct < ApplicationRecord
   belongs_to :recipe, :inverse_of => :recipe_products
   belongs_to :product
 
-  before_destroy :destroy_product_if_last_reference
+  after_destroy :destroy_product_if_last_reference
 
   def name
     product.name unless product == nil
@@ -16,6 +16,10 @@ class RecipeProduct < ApplicationRecord
 
   private
     def destroy_product_if_last_reference
-      product.destroy if(product.recipe_products.size == 1 && product.recipe_products[0].id == self.id)
+      puts "destroy_product_if_last_reference"
+      puts "recipe_products.size: #{product.recipe_products.size}"
+      puts "recipe_products[0]: #{product.recipe_products.inspect}"
+      # product.destroy if(product.recipe_products.size == 0 && product.recipe_products[0]&.id == self.id)
+      product.destroy if(product.recipe_products.size == 0)
     end
 end
