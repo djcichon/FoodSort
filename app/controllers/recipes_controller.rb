@@ -33,6 +33,11 @@ class RecipesController < ApplicationController
       return
     end
 
+    rp_ids = recipe_params.to_h[:recipe_products_attributes].map { |index, value| value[:id].to_i }
+    @recipe.recipe_products.each do |rp|
+      rp.destroy unless rp_ids.include?(rp.id)
+    end
+
     if @recipe.update_attributes(recipe_params)
       flash[:success] = "Recipe successfully updated"
       redirect_to root_url

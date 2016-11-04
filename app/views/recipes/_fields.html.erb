@@ -14,6 +14,9 @@
   <%= f.fields_for :recipe_products do |product_form| %>
     <li>
       <%= product_form.object.name %>
+      <a class="delete_ingredient_button" href="#" data-turbolinks="false">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      </a>
       <%= product_form.hidden_field :name, 'data-index': product_form.options[:child_index] %>
     </li> 
   <% end %>
@@ -34,20 +37,22 @@
     var $ingredient_counter = $('#ingredient_counter');
 
     // Find the last element with data-index to calculate the next one
-    var next_index = 0;
     var $data_indices = $('input[data-index]');
+    var next_index = 0;
 
-    //TODO: Can next_index = $data_indices.length?
     if($data_indices.length > 0) {
       next_index = $data_indices.last().data('index') + 1;
     }
 
-    //TODO: Can this be rendered more simply with a rails helper?
+    //TODO: Can these be rendered more simply with rails helpers?
+    var delete_icon = '<a class="delete_ingredient_button" href="#" data-turbolinks="false">\n' +
+                        '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>\n' +
+                      '</a>';
     var hidden = '<input data-index="' + next_index + '" type="hidden" value="' + name + 
                  '" name="recipe[recipe_products_attributes][' + next_index + '][name]"' +
                  'id="recipe_products_attributes_' + next_index + '_name" />';
 
-    $list.append('<li>' + name + hidden + '</li>');
+    $list.append('<li>' + name + delete_icon + hidden + '</li>');
 
     $ingredient_counter.html(next_index + 1);
 
@@ -61,5 +66,20 @@
 
       return false;
     }
+  });
+
+  // Binding to body since this is replaced when turbolinks changes pages
+  $('body').on('click', '.delete_ingredient_button', function() {
+      if(confirm("Are you sure you want to remove this ingredient?")) {
+        var li = $(this).parents('li');
+
+        // Remove the hidden with the id
+        li.next('input[type=hidden]').remove();
+
+        // Remove the li
+        li.remove();
+      }
+
+      return false;
   });
 </script>

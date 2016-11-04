@@ -66,7 +66,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "error while creating recipe" do
     sign_in @user
-    
+
     # Create a recipe which with the same name
     recipe = @user.recipes.create(name: "Chocolate covered kale")
 
@@ -93,7 +93,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get edit" do
     sign_in @user
-    
+
     recipe = recipes(:hotdogs)
 
     get edit_recipe_url(recipe)
@@ -118,7 +118,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
         id: recipe.id,
         name: "Kale covered chocolate", 
         category: "Delicious",
-        recipe_products_attributes: [ { name: "Chocolate" }, { name: "Kale" } ]
+        recipe_products_attributes: { "0": { name: "Chocolate" }, "1": { name: "Kale" } }
       } 
     }
 
@@ -138,6 +138,38 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil recipe.products.find_by(name: "Kale")
   end
 
+  test "remove product from a recipe on update" do
+    sign_in @user
+
+    # Create a recipe to update
+    recipe = recipes(:hotdogs)
+    recipe_product = recipe_products(:hotdogs_hotdog_buns)
+
+    params = { 
+      recipe: { 
+        id: recipe.id,
+        name: recipe.name, 
+        category: recipe.category,
+        # Only list one ingredient
+        recipe_products_attributes: {"0": { name: recipe_product.name, id: recipe_product.id } }
+      } 
+    }
+
+    assert_no_difference "Recipe.count" do
+      patch recipe_url(recipe.id), params: params
+    end
+    assert_redirected_to root_url
+
+    recipe = recipe.reload
+
+    assert_not_nil recipe
+    assert_equal params[:recipe][:name], recipe.name
+    assert_equal params[:recipe][:category], recipe.category
+
+    assert_equal 1, recipe.products.size
+    assert_not_nil recipe.products.find_by(name: "Hot dog buns")
+  end
+
   test "error while updating recipe" do
     sign_in @user
 
@@ -152,7 +184,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
         id: recipe.id,
         name: other_recipe.name, 
         category: "Delicious",
-        recipe_products_attributes: [ { name: "Chocolate" }, { name: "Kale" } ]
+        recipe_products_attributes: { "0": { name: "Chocolate" }, "1": { name: "Kale" } }
       } 
     }
 
