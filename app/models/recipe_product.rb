@@ -16,10 +16,6 @@ class RecipeProduct < ApplicationRecord
 
   private
     def destroy_product_if_last_reference
-      puts "destroy_product_if_last_reference"
-      puts "recipe_products.size: #{product.recipe_products.size}"
-      puts "recipe_products[0]: #{product.recipe_products.inspect}"
-      # product.destroy if(product.recipe_products.size == 0 && product.recipe_products[0]&.id == self.id)
       product.destroy if(product.recipe_products.size == 0)
     end
 end
