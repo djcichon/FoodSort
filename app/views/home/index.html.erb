@@ -38,16 +38,16 @@
     <% end %>
   </table>
 
-  <%# <h1>Your Grocery Trips</h1> %>
-  <%# <table class="table"> %>
-  <%#   <tr> %>
-  <%#     <th>Label</th> %>
-  <%#   </tr> %>
+  <h1>Your Grocery Trips</h1>
+  <table class="table">
+    <tr>
+      <th>Label</th>
+    </tr>
 
-  <%#   <% @grocery_trips.each do |grocery_trip| %1> %>
-  <%#     <tr> %>
-  <%#       <td><%= link_to grocery_trip.label, edit_grocery_trip_path(grocery_trip) %1></td> %>
-  <%#     </tr> %>
-  <%#   <% end %1> %>
-  <%# </table> %>
+    <% @grocery_trips.each do |grocery_trip| %>
+      <tr>
+        <td><%= link_to grocery_trip.label, edit_grocery_trip_path(grocery_trip) %></td>
+      </tr>
+    <% end %>
+  </table>
 <% end %>

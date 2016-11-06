@@ -1,66 +1,94 @@
 <h1>Create Grocery Trip</h1>
 
-<div class="col-md-3">
-  <h2>Select Recipes</h2>
-  <div id="recipe_list" class="list-of-cards">
-    <% @recipes.each do |recipe| %>
-      <div class="card" data-recipe-id="<%= recipe.id %>">
-        <div class="recipe-name">
-          <%= recipe.name %>
-        </div>
-        <div class="recipe-controls">
-          <span class="recipe-minus glyphicon glyphicon-minus"></span>
-          <span class="recipe-count">
-            0
-          </span>
-          <span class="recipe-plus glyphicon glyphicon-plus"></span>
-        </div>
+<%# TODO: Wrap this in a form, and somehow make the counter an input which gets submitted as a dish count %>
+<%= form_for @grocery_trip  do |f| %>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= f.label :label %>
+        <%= f.text_field :label, class: 'form-control' %>
       </div>
-    <% end %>
+    </div>
   </div>
-</div>
+  <div class="row">
+    <div class="col-md-3">
+      <h2>Select Recipes</h2>
+      <div id="dish_list" class="list-of-cards">
+          <% @grocery_trip.dishes.each do |dish| %>
+            <div class="card" data-recipe-id="<%= dish.recipe.id %>">
+              <%= f.fields_for :dishes, dish do |dish_form| %>
+                <%= dish_form.hidden_field :recipe_id %>
+                <%= dish_form.hidden_field :count, class: 'dish-count-hidden' %>
+              <% end %>
+              <div class="dish-name">
+                <%= dish.recipe.name %>
+              </div>
+              <div class="dish-controls">
+                <span class="dish-minus glyphicon glyphicon-minus"></span>
+                <span class="dish-count">
+                  0
+                </span>
+                <span class="dish-plus glyphicon glyphicon-plus"></span>
+              </div>
+            </div>
+          <% end %>
+          <%= f.button "Create Grocery Trip", class: 'btn btn-primary' %>
+      </div>
+    </div>
 
-<div class="col-md-3 col-md-offset-1">
-  <h2>Grocery List</h2>
-  <div id="grocery_list" class="list-of-cards">
+    <div class="col-md-3 col-md-offset-1">
+      <h2>Grocery List</h2>
+      <div id="grocery_list" class="list-of-cards">
+      </div>
+    </div>
   </div>
-</div>
+<% end %>
 
 <script>
 (function() {
   function addMeal() {
     var $card = $(this).parents('.card');
     var recipe_id = $card.data('recipe-id');
-    var $count = $card.find('.recipe-count');
-    var new_count = parseInt($count.html()) + 1;
 
     $.ajax( { url: '<%= grocery_trips_get_ingredients_url %>', 
               data: { recipe_id: recipe_id } 
     })
     .done(function(json) {
       var $groceryList = $('#grocery_list');
+      var new_count = updateCounts($card, 1);
 
       $.each(json, function( index, el ) {
         var order = (el.order == null ? -1 : parseInt(el.order));
 
         var $liToAddBefore = findLiToAddBefore($groceryList, order);
         addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, new_count, el.name);
-      });
 
-      $count.html(new_count);
+      });
     });
   }
 
   function removeMeal() {
     var $card = $(this).parents('.card');
     var recipe_id = $card.data('recipe-id');
-    var $count = $card.find('.recipe-count');
-    var current_count = parseInt($count.html());
+    var current_count = $card.find('.dish-count').html();
 
     if(current_count > 0) {
-      $('#grocery_list div[data-recipe-id=' + recipe_id + '][data-recipe-count=' + current_count + ']').remove();
-      $count.html(current_count - 1);
+      $('#grocery_list div[data-recipe-id=' + recipe_id + '][data-dish-count=' + current_count + ']').remove();
+      updateCounts($card, -1);
     }
+  }
+
+  function updateCounts($card, amount_to_add) {
+    var $count = $card.find('.dish-count');
+    var $count_hidden = $card.find('.dish-count-hidden');
+    var current_count = parseInt($count.html());
+
+    var new_count = Math.max(0, current_count + amount_to_add)
+
+    $count.html(new_count);
+    $count_hidden.val(new_count);
+
+    return new_count;
   }
 
   function findLiToAddBefore($groceryList, order) {
@@ -78,10 +106,10 @@
     return $higherLi;
   }
 
-  function addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, recipe_count, name) {
+  function addNewLiToGroceryList($groceryList, $liToAddBefore, order, recipe_id, dish_count, name) {
     var newLi = '<div class="card" data-order="' + order + 
       '" data-recipe-id="' + recipe_id + 
-      '" data-recipe-count="' + recipe_count + 
+      '" data-dish-count="' + dish_count + 
       '">' + name + '</li>';
 
     // Add this li before the higher one
@@ -94,7 +122,7 @@
     }
   }
 
-  $('.recipe-plus').on('click', addMeal);
-  $('.recipe-minus').on('click', removeMeal);
+  $('.dish-plus').on('click', addMeal);
+  $('.dish-minus').on('click', removeMeal);
 }());
 </script>

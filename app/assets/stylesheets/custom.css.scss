@@ -46,27 +46,27 @@ a {
     box-shadow: 2px 2px 2px #888888;
     display: inline-block;
 
-    .recipe-name {
+    .dish-name {
       max-width: 135px;
       overflow: hidden;
       display: inline-block;
     }
 
-    .recipe-controls {
+    .dish-controls {
       margin-top: -5px;
       margin-bottom: -5px;
       display: inline-block;
       float: right;
 
-      .recipe-count {
+      .dish-count {
         font-size: 1.5em;
       }
 
-      .recipe-minus {
+      .dish-minus {
         font-size: 1.2em;
       }
 
-      .recipe-plus {
+      .dish-plus {
         font-size: 1.2em;
       }
     }
