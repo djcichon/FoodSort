@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005115811) do
+ActiveRecord::Schema.define(version: 20161104190940) do
 
   create_table "dishes", force: :cascade do |t|
     t.integer  "grocery_trip_id"
     t.integer  "recipe_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.integer  "count"
     t.index ["grocery_trip_id"], name: "index_dishes_on_grocery_trip_id"
     t.index ["recipe_id"], name: "index_dishes_on_recipe_id"
   end
