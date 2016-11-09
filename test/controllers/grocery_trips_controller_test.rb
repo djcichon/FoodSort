@@ -27,7 +27,8 @@ class GroceryTripsControllerTest < ActionDispatch::IntegrationTest
 
     # Should list all recipes
     @user.recipes.each do |recipe|
-      assert_select "#recipe_list .card .recipe-name", recipe.name
+      assert_select "#dish_list .card .dish-name", recipe.name
+
     end
   end
 
