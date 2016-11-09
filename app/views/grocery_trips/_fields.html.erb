@@ -29,12 +29,20 @@
           </div>
         <% end %>
     </div>
-    <%= f.button "Create Grocery Trip", class: 'btn btn-primary' %>
+    <%= f.button "Save Grocery Trip", class: 'btn btn-primary' %>
   </div>
 
   <div class="col-md-3 col-md-offset-1">
     <h2>Grocery List</h2>
     <div id="grocery_list" class="list-of-cards">
+      <% @grocery_trip.ingredients.each do |ingredient| %>
+        <div class="card" 
+             data-order="<%= ingredient.product.order %>"
+             data-recipe-id="<%= ingredient.recipe.id %>"
+             data-dish-count="<%= ingredient.dish_index %>">
+          <%= ingredient.name %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

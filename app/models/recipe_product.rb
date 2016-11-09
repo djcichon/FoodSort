@@ -1,5 +1,7 @@
 class RecipeProduct < ApplicationRecord
   attr_accessor :name
+  attr_accessor :dish_index
+
   belongs_to :recipe, :inverse_of => :recipe_products
   belongs_to :product
 

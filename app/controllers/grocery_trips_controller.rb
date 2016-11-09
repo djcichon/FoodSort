@@ -32,8 +32,6 @@ class GroceryTripsController < ApplicationController
   def edit
     @grocery_trip = GroceryTrip.find(params[:id])
     @grocery_trip.populate_dishes(current_user.recipes)
-
-    #TODO: Generate the list of ingredients here to be rendered in the view
   end
 
   def update

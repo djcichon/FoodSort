@@ -18,4 +18,20 @@ class GroceryTrip < ApplicationRecord
       end
     end
   end
+
+  def ingredients()
+    ingredients = []
+
+    self.dishes.each do |dish|
+      dish.count&.times do |dish_index|
+        dish.recipe.recipe_products.each do |ingredient|
+          ingredient.dish_index = dish_index
+
+          ingredients << ingredient
+        end
+      end
+    end
+
+    ingredients.sort { |a, b| a.product.order <=> b.product.order }
+  end
 end
