@@ -8,7 +8,7 @@ class GroceryTrip < ApplicationRecord
   after_initialize :init
 
   def init()
-    self.label = Date.today.to_s if self.label == nil
+    self.label = DateTime.now.strftime("%B %-d, %Y \@ %-l:%M%P") if self.label == nil
   end
 
   def populate_dishes(recipes)
