@@ -4,7 +4,7 @@ class HomeController < ApplicationController
   def index
     if current_user
       @recipes = current_user.recipes.order(:name)
-      @grocery_trips = current_user.grocery_trips
+      @grocery_trips = current_user.grocery_trips.order(updated_at: :desc)
     end
   end
 end
