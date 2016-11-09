@@ -13,7 +13,9 @@ class GroceryTrip < ApplicationRecord
 
   def populate_dishes(recipes)
     recipes.each do |recipe|
-      self.dishes.new(grocery_trip: self, recipe: recipe, count: 0)
+      if !self.recipes.include? recipe
+        self.dishes.new(grocery_trip: self, recipe: recipe, count: 0)
+      end
     end
   end
 end

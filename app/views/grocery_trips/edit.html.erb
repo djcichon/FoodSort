@@ -1,2 +1,5 @@
-<h1>GroceryTrips#edit</h1>
-<p>Find me in app/views/grocery_trips/edit.html.erb</p>
+<h1>Edit Grocery Trip</h1>
+
+<%= form_for @grocery_trip  do |f| %>
+  <%= render 'fields', f: f %>
+<% end %>
