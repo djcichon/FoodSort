@@ -15,6 +15,8 @@ class GroceryTripsController < ApplicationController
       grocery_trip.dishes.new(recipe_id: recipe_id, count: count) unless count <= 0
     end
 
+    grocery_trip.label = grocery_trip_params[:label]
+
     if grocery_trip.save
       flash[:success] = "Grocery Trip successfully created"
       redirect_to root_url

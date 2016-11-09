@@ -8,7 +8,7 @@ class GroceryTrip < ApplicationRecord
   after_initialize :init
 
   def init()
-    self.label = Date.today.to_s 
+    self.label = Date.today.to_s if self.label == nil
   end
 
   def populate_dishes(recipes)
