@@ -1,24 +1,9 @@
-# README
+# FoodSort
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+FoodSort is a web application which makes it easy to generate a sorted grocery list based on a list of recipes.  A demo is available [here](https://foodsort.herokuapp.com).
 
-Things you may want to cover:
+# Planned Features
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. Show quantity in grocery list, rather than duplicates
+2. Guide users to Product page to sort their products
+3. Improve design of landing page
